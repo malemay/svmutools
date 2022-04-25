@@ -1,0 +1,23 @@
+Package: svmutools
+Title: Processing the output of svmu and converting it to VCF format
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Marc-André",
+           family = "Lemay",
+           role = c("aut", "cre"),
+           email = "marc-andre.lemay.2@ulaval.ca")
+Description: The svmu program (github.com/mahulchak/svmu) produces output in a
+    custom tab-separated format that cannot readily be used by other software.
+    The objective of this package is to provide functions to process that output.
+    It includes functions for reformatting variant calls, filtering them, and
+    converting their format to sequence-explicit VCF format for tools such
+    as graph genotypers that require explicit sequence.
+License:GPL (>= 3)
+Encoding: UTF-8
+Imports:
+	GenomicRanges,
+	Rsamtools,
+	parallel
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
