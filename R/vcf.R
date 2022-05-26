@@ -295,7 +295,7 @@ vcf_header <- function(ref_fasta) {
 	fileformat <- "fileformat=VCFv4.3"
 	filedate <- paste0("fileDate=", format(Sys.Date(), "%Y%m%d"))
 	filesource <- "source=svmu+svmutools"
-	reference <- basename(ref_fasta)
+	reference <- paste0("reference=", basename(ref_fasta))
 
 	# Generating the contig lines from the reference fasta
 	stopifnot(file.exists(ref_fasta))
