@@ -74,7 +74,8 @@ See \code{\link{inverted_regions}} for more details.}
 maxcov and max_size.}
 
 \item{min_size}{An integer. The minimum size of an SV for it to be kept for further
-processing. See \code{\link{filter_svmu}} for more details.}
+processing. See \code{\link{filter_svmu}} for more details. This filter is also
+applied at the format_vcf step on the final SVLEN.}
 
 \item{sv_types}{A character vector. The SV types to be kept for further processing.
 See \code{\link{filter_svmu}} for more details.}
@@ -83,10 +84,8 @@ See \code{\link{filter_svmu}} for more details.}
 to be kept for further processing. See \code{\link{filter_svmu}} for more details.}
 
 \item{max_size}{An integer. The maximum size for an SV to be kept for further processing.
-See \code{\link{filter_svmu}} for more details.}
-}
-\value{
-
+See \code{\link{filter_svmu}} for more details. This filter is also
+applied at the format_vcf step on the final SVLEN.}
 }
 \description{
 This function takes a file of SVs output by svmu (typically

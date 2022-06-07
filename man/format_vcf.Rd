@@ -4,7 +4,13 @@
 \alias{format_vcf}
 \title{Format svmu data for VCF output}
 \usage{
-format_vcf(svmu_data, sample_name)
+format_vcf(
+  svmu_data,
+  sample_name,
+  min_size = NULL,
+  max_size = NULL,
+  logging = TRUE
+)
 }
 \arguments{
 \item{svmu_data}{A data.frame with explicit sequences and position
@@ -13,6 +19,17 @@ POS, REf, and ALT columns.}
 
 \item{sample_name}{A character. The name of the sample, for naming the
 sample in the header line.}
+
+\item{min_size.}{A numeric of length one. The minimum size (in absolute
+value) for an SV to be kept. If NULL (the default), no filters are
+applied.}
+
+\item{max_size.}{A numeric of length one. The maximum size (in absolute
+value) for an SV to be kept. If NULL (the default), no filters are
+applied.}
+
+\item{logging.}{A logical. Whether the user should be informed on the
+number of markers removed at the SV size filtering step.}
 }
 \value{
 A data.frame that constitutes the body of the VCF to output,

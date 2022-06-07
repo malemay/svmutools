@@ -12,7 +12,7 @@ Description: The svmu program (github.com/mahulchak/svmu) produces output in a
     It includes functions for reformatting variant calls, filtering them, and
     converting their format to sequence-explicit VCF format for tools such
     as graph genotypers that require explicit sequence.
-License:GPL (>= 3)
+License: GPL (>= 3)
 Encoding: UTF-8
 Imports:
 	GenomicRanges,
@@ -20,4 +20,4 @@ Imports:
 	parallel
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.0

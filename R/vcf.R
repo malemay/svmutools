@@ -222,6 +222,14 @@ extract_sequences <- function(svmu_data, ref_fasta, query_fasta) {
 #'   POS, REf, and ALT columns.
 #' @param sample_name A character. The name of the sample, for naming the
 #'   sample in the header line.
+#' @param min_size. A numeric of length one. The minimum size (in absolute
+#'   value) for an SV to be kept. If NULL (the default), no filters are
+#'   applied.
+#' @param max_size. A numeric of length one. The maximum size (in absolute
+#'   value) for an SV to be kept. If NULL (the default), no filters are
+#'   applied.
+#' @param logging. A logical. Whether the user should be informed on the
+#'   number of markers removed at the SV size filtering step.
 #'
 #' @return A data.frame that constitutes the body of the VCF to output,
 #'   with the header line as column names and one record per row of the
@@ -230,7 +238,7 @@ extract_sequences <- function(svmu_data, ref_fasta, query_fasta) {
 #' @export
 #' @examples
 #' NULL
-format_vcf <- function(svmu_data, sample_name) {
+format_vcf <- function(svmu_data, sample_name, min_size = NULL, max_size = NULL, logging = TRUE) {
 	# Creating the skeleton of the output VCF data
 	output <- data.frame(CHROM = svmu_data$REF_CHROM,
 			     POS = svmu_data$POS,
@@ -269,6 +277,21 @@ format_vcf <- function(svmu_data, sample_name) {
 	output$INFO <- paste0(output$INFO, ifelse(svmu_data$SV_TYPE == "INSDUP", ";INSDUP", ""))
 	output$INFO <- paste0(output$INFO, ifelse(svmu_data$Q_OVERLAP, ";QOVERLAP", ""))
 	output$INFO <- paste0(output$INFO, ifelse(svmu_data$INVERTED, ";INVERTED", ""))
+
+	# Filtering based on SVLEN
+	if(!is.null(min_size) && !is.null(max_size)) {
+		svlen <- nchar(output$ALT) - nchar(output$REF)
+		del_filter <- grepl("SVTYPE=DEL", output$INFO) & (svlen > -min_size | svlen < -max_size)
+		ins_filter <- grepl("SVTYPE=INS", output$INFO) & (svlen <  min_size | svlen >  max_size)
+
+		if(logging) {
+			message("Removing ", sum(del_filter), " deletions due to minimum and maximum size.")
+			message("Removing ", sum(ins_filter), " insertions due to minimum and maximum size.")
+		}
+
+		all_filters <- del_filter | ins_filter
+		output <- output[!all_filters, ]
+	}
 
 	# Adding the genotype of the sample; simply the sample name with homozygous ALT genotypes at all loci
 	output[[sample_name]] <- "1/1"
@@ -383,13 +406,15 @@ vcf_header <- function(ref_fasta) {
 #'   \code{\link{filter_svmu}}. These comprise the parameters min_size, sv_types,
 #'   maxcov and max_size.
 #' @param min_size An integer. The minimum size of an SV for it to be kept for further
-#'   processing. See \code{\link{filter_svmu}} for more details.
+#'   processing. See \code{\link{filter_svmu}} for more details. This filter is also
+#'   applied at the format_vcf step on the final SVLEN.
 #' @param sv_types A character vector. The SV types to be kept for further processing.
 #'   See \code{\link{filter_svmu}} for more details.
 #' @param maxcov A numeric. The maximum coverage on the reference and query for the SV
 #'   to be kept for further processing. See \code{\link{filter_svmu}} for more details.
 #' @param max_size An integer. The maximum size for an SV to be kept for further processing.
-#'   See \code{\link{filter_svmu}} for more details.
+#'   See \code{\link{filter_svmu}} for more details. This filter is also
+#'   applied at the format_vcf step on the final SVLEN.
 #'
 #' @return
 #'
@@ -452,7 +477,7 @@ svmu_to_vcf <- function(svmu_file, sample_name, ref_fasta, query_fasta, output_f
 	# Converting the records to VCF format
 	if(logging) message("Converting ", nrow(svs), " records to VCF format.")
 
-	vcf_records <- format_vcf(svs, sample_name)
+	vcf_records <- format_vcf(svs, sample_name, min_size = min_size, max_size = max_size, logging = logging)
 	header <- vcf_header(ref_fasta)
 
 	# Now we need to order the rows of the VCF files according to the order of the sequences in the fasta file
