@@ -1,6 +1,6 @@
 Package: svmutools
 Title: Processing the output of svmu and converting it to VCF format
-Version: 0.0.0.9000
+Version: 0.1
 Authors@R: 
     person(given = "Marc-André",
            family = "Lemay",
@@ -15,9 +15,11 @@ Description: The svmu program (github.com/mahulchak/svmu) produces output in a
 License: GPL (>= 3)
 Encoding: UTF-8
 Imports:
+	Biostrings,
 	GenomicRanges,
-	Rsamtools,
-	parallel
+	IRanges,
+	parallel,
+	Rsamtools
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
