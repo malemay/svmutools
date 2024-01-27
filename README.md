@@ -45,5 +45,10 @@ available functions can be found here:
 
 # Citation
 
-The reference to the `svmutools` package will be uploaded shortly.
+If you use this software, plase cite our publication:
 
+Lemay, M.-A., de Ronne, M., Bélanger, R., & Belzile, F. (2023). k-mer-based GWAS enhances the discovery of causal variants and candidate genes in soybean. *The Plant Genome*, 16, e20374. [doi:10.1002/tpg2.20374](https://doi.org/10.1002/tpg2.20374)
+
+You should also cite the original SVMU publication, as requested by the author of that software:
+
+Chakraborty, M., Emerson, J.J., Macdonald, S.J. et al. Structural variants exhibit widespread allelic heterogeneity and shape variation in complex traits. *Nat Commun* 10, 4872 (2019). [doi:10.1038/s41467-019-12884-1](https://doi.org/10.1038/s41467-019-12884-1)
